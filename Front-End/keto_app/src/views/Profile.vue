@@ -20,6 +20,7 @@
           <div v-else>Current Weight: {{this.$store.state.profile.cur_weight}}</div>
           </div>
         <div>Goal Weight: {{this.$store.state.profile.goal_weight}}</div>
+        <!-- <div>Favorite Food: {{this.favFood}}</div> -->
         <div class="btn" @click="delProfile">Clear Profile</div>
       </div>
       <div v-else>
@@ -42,7 +43,8 @@ export default {
     newWeight: null,
     displayForm: false,
     dispEdit: false,
-    color: 'blue'
+    color: 'blue',
+    favFood: null
   }),
   components: {
     AddProfile
@@ -59,8 +61,9 @@ export default {
         this.color = "gold"
         return "Very Active"
       }
-    }
+    },
   },
+
   methods: {
     togDisplay(){
       console.log('displaying')

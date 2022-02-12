@@ -21,14 +21,8 @@ export default {
     AddFeed,
   },
   mounted(){
-    this.getNews()
   },
   methods: {
-    // DEBUG this cors issue:
-    async getNews(){
-      // const res = await axios.get(`https://serpapi.com/search.json?engine=google_scholar&q=ketogenic&scisbd=1&hl=en&num=20&as_vis=1&api_key=36137ef370bbb927779a6ca8963cb804fad42780d418c9d9449f791f511c2d86`)
-      // console.log(res.data)
-    }
   }
 
 }

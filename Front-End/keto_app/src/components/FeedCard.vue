@@ -2,9 +2,9 @@
   <div class="feed-card">
     <div class="text">{{element.text}}</div>
     <img v-if="element.img" :src="element.img" alt="">
-    <div v-if="element.link">
+    <!-- <div v-if="element.link">
       <LinkPreview :link="element.link"/>
-    </div>
+    </div> -->
   </div>
 </template>
 
