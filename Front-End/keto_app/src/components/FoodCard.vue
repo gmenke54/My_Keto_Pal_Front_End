@@ -70,8 +70,6 @@ export default {
         days: newArr
       }
       await axios.put(`/foods/${this.food.id}`, obj)
-
-      // await axios.delete(`/foods/${this.food.id}`)
       let resp = await axios.get('/days')
       console.log(resp.data)
       let id = this.$store.state.user.id
