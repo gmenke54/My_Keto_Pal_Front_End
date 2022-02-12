@@ -7,6 +7,10 @@ import axios from 'axios';
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000';
+// Local:
+// axios.defaults.baseURL = 'http://127.0.0.1:8000';
 
-createApp(App).use(store).use(router, axios).mount('#app');
+// Deployed:
+axios.defaults.baseURL = 'https://ketosis-backend.herokuapp.com';
+
+createApp(App).use(store).use(router).mount('#app');

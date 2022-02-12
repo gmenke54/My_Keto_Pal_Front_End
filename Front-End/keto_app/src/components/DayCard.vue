@@ -21,7 +21,7 @@ export default {
     async getCurrentDay(){
       let id = this.$store.state.user.id
       // console.log(this.date, id)
-      let res = await axios.get('http://127.0.0.1:8000/days')
+      let res = await axios.get('/days')
       // console.log(res.data)
       const result = res.data.filter(day => day.user_id===id && day.date===this.date)
       // console.log(result[0])

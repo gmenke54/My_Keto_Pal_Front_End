@@ -73,7 +73,7 @@ export default {
 	      user_id: id,
 	      cur_weight: this.newWeight
       }
-      const res = await axios.put(`http://127.0.0.1:8000/profiles/${id}`, update)
+      const res = await axios.put(`/profiles/${id}`, update)
       console.log(res)
       this.newWeight = null
       this.$store.dispatch('setUserId')
@@ -81,7 +81,7 @@ export default {
     },
     async delProfile(){
       const id = this.$store.state.user.id
-      await axios.delete(`http://127.0.0.1:8000/profiles/${id}`)
+      await axios.delete(`/profiles/${id}`)
       this.$router.go()
     }
   }

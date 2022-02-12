@@ -37,10 +37,10 @@
       </div>
       <div class="slide" v-if="slide===4">
         <div>What is your current weight?</div>
-        <input type="number" name="cur_weight" placeholder="Current weight Ibs" v-model="cur_weight"/>
+        <input type="number" :class="error" name="cur_weight" :placeholder="placeholder" v-model="cur_weight"/>
         <div class="btnBar">
           <div class="btn hollow" @click="slide--">back</div>
-          <div class="btn" @click="slide++">next</div>
+          <div class="btn" @click="checkWeight()">next</div>
         </div>
       </div>
       <div class="slide" v-if="slide===5">
@@ -80,9 +80,20 @@ export default {
     activ: 'med',
     low: 'grey',
     med: 'grey',
-    high: 'grey'
+    high: 'grey',
+    placeholder: 'Current weight Ibs',
+    error: 'normal'
   }),
   methods: {
+    checkWeight(){
+      if (this.goal_weight<this.cur_weight){
+        this.slide++
+      }else {
+        this.placeholder = "Goal must be less than current"
+        this.cur_weight = null
+        this.error = 'red'
+      }
+    },
     async submit(){
       let loss = ((this.goal_weight - this.cur_weight) / this.keto_weeks) * -1;
       let i_carbs = loss * (40 / loss ** 2) * (1 + this.age / 60);
@@ -112,7 +123,7 @@ export default {
         daily_fat: fat,
         daily_sugar: sugar
       }
-      const res = await axios.post('http://127.0.0.1:8000/profiles/', newProf)
+      const res = await axios.post('/profiles/', newProf)
       this.$router.go()
     },
     setActiv(level){
@@ -225,6 +236,10 @@ input{
 }
 .blue:hover{
   border-color: #3181CE
+}
+.red{
+  border-color: red;
+  border-radius: 3px
 }
 
 </style>

@@ -31,7 +31,7 @@ export default {
       let nutrients = res.data
       let curDay = this.$store.state.day
       if (curDay === null){
-        const res = await axios.post(`http://127.0.0.1:8000/days/`, {
+        const res = await axios.post(`/days/`, {
           user_id: this.$store.state.user.id,
           date: this.date,
           food_list: []
@@ -64,8 +64,8 @@ export default {
 		    chol_dv: nutrients.totalDaily.CHOLE.quantity,
 		    sodium_dv: nutrients.totalDaily.NA.quantity
       }
-      let response = await axios.post(`http://127.0.0.1:8000/foods/`, foodObj)
-      let resp = await axios.get('http://127.0.0.1:8000/days')
+      let response = await axios.post(`/foods/`, foodObj)
+      let resp = await axios.get('/days')
       console.log(resp.data)
       let id = this.$store.state.user.id
       const result = resp.data.filter(day => day.user_id===id && day.date===this.date)

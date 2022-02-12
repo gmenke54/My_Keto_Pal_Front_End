@@ -32,7 +32,7 @@ export default {
     this.text = null
     this.image = null
     this.link = null
-    await axios.post(`http://127.0.0.1:8000/posts/`, newPost)
+    await axios.post(`/posts/`, newPost)
     this.$store.dispatch('getFeed')
     }
   }

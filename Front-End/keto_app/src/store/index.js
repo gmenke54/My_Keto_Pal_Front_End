@@ -95,15 +95,13 @@ export default createStore({
       };
       state.commit('setUser', curUser);
       try {
-        const resp = await axios.get(
-          `http://127.0.0.1:8000/profiles/${this.state.user.id}`
-        );
+        const resp = await axios.get(`/profiles/${this.state.user.id}`);
         state.commit('setProfile', resp.data);
       } catch {}
     },
     async getFeed(state) {
-      const posts = await axios.get('http://127.0.0.1:8000/posts');
-      // const recipes = await axios.get('http://127.0.0.1:8000/recipes');
+      const posts = await axios.get('/posts');
+      // const recipes = await axios.get('/recipes');
       // console.log(posts.data, recipes.data);
       // let feed = concat(posts.data, recipes.data);
       state.commit('setFeed', posts.data);

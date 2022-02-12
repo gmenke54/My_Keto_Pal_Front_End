@@ -61,8 +61,8 @@ export default {
     },
     async delFood(){
       console.log(this.food.id)
-      await axios.delete(`http://127.0.0.1:8000/foods/${this.food.id}`)
-      let resp = await axios.get('http://127.0.0.1:8000/days')
+      await axios.delete(`/foods/${this.food.id}`)
+      let resp = await axios.get('/days')
       console.log(resp.data)
       let id = this.$store.state.user.id
       const result = resp.data.filter(day => day.user_id===id && day.date===this.$store.state.day.date)
@@ -104,9 +104,9 @@ export default {
 		    chol_dv: nutrients.totalDaily.CHOLE.quantity,
 		    sodium_dv: nutrients.totalDaily.NA.quantity
       }
-      let response = await axios.post(`http://127.0.0.1:8000/foods/`, foodObj)
+      let response = await axios.post(`/foods/`, foodObj)
       this.delFood()
-      let resp = await axios.get('http://127.0.0.1:8000/days')
+      let resp = await axios.get('/days')
       console.log(resp.data)
       let id = this.$store.state.user.id
       const result = resp.data.filter(day => day.user_id===id && day.date===this.$store.state.day.date)

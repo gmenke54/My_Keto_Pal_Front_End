@@ -228,7 +228,7 @@ export default {
       this.dispSugGoal=cond
     },
     async getAllDays(){
-      const res = await axios.get(`http://127.0.0.1:8000/days`)
+      const res = await axios.get(`/days`)
       this.barOptions.scales.y.suggestedMax = this.$store.state.profile.daily_carb
       let allDays = res.data
       let date = this.date
