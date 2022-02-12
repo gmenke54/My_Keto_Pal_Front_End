@@ -59,7 +59,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   background-color: #F0F2F4;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 body{
@@ -85,7 +85,9 @@ a:hover, .a:hover {
 .nav {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-around;
+  font-size: 1.3rem;
   padding: 5px 0 5px 0;
   font-weight: bold;
   background-color: white;

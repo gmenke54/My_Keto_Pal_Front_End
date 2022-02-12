@@ -44,7 +44,10 @@
           <transition name="fade">
             <div class="goal" v-if="dispGoal">Daily Goal: {{this.$store.state.profile.daily_fat.toFixed(1)}}</div>
           </transition>
-          <DoughnutChart :chartData="fatData" :options="this.options" />
+          <span class="span">
+            <DoughnutChart :chartData="fatData" :options="this.options" />
+          </span>
+          
         </div>
       </div>
     </div>
@@ -105,7 +108,7 @@ export default {
         }
       },
       options: {
-        responsive: false,
+        // responsive: false,
         plugins: {
           legend: {
             display: false
@@ -309,7 +312,7 @@ export default {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  flex: wrap;
+  flex-wrap: wrap;
 }
 .dough{
   display: flex;
@@ -330,7 +333,8 @@ export default {
   box-shadow: 0px 0px 12px -5px rgba(0,0,0,0.7)
 }
 .day-card{
-  width: 340px
+  width: 340px;
+  position: relative
 }
 .nut{
   position: relative;
@@ -363,4 +367,8 @@ export default {
 .fade-enter, .fade-leave-to {
   opacity: 0
 }
+/* .span{
+  padding: 1rem;
+  width: max(80vw, 20rem)
+} */
 </style>
