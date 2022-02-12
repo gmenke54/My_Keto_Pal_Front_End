@@ -19,7 +19,22 @@ export default {
   },
   methods: {
     async getDetails(){
-      const res = await axios.get(`http://api.linkpreview.net/?key=c98ba09b2e8ead0f3b95ac8ffc7bb966&q=${this.link}`)
+      let random = Math.floor(Math.random() * 3)
+      console.log(random)
+      let key = ''
+      switch(random){
+        case 0:
+          key = process.env.VUE_APP_LINKONE
+          break
+        case 1:
+          key = process.env.VUE_APP_LINKTWO
+          break
+        case 2:
+          key = process.env.VUE_APP_LINKTHREE
+          break
+      }
+      console.log(key)
+      const res = await axios.get(`http://api.linkpreview.net/?key=${key}&q=${this.link}`)
       this.details = res.data
     }
   },

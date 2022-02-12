@@ -8,7 +8,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import FeedCard from '../components/FeedCard.vue'
 import AddFeed from '../components/AddFeed.vue'
 export default {

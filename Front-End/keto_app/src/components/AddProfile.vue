@@ -89,7 +89,7 @@ export default {
       if (this.goal_weight<this.cur_weight){
         this.slide++
       }else {
-        this.placeholder = "Goal must be less than current"
+        this.placeholder = "Current must be more than goal"
         this.cur_weight = null
         this.error = 'red'
       }
