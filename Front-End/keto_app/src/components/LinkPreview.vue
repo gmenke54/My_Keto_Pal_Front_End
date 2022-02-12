@@ -20,7 +20,6 @@ export default {
   methods: {
     async getDetails(){
       let random = Math.floor(Math.random() * 3)
-      console.log(random)
       let key = ''
       switch(random){
         case 0:
@@ -33,7 +32,6 @@ export default {
           key = process.env.VUE_APP_LINKTHREE
           break
       }
-      console.log(key)
       const res = await axios.get(`http://api.linkpreview.net/?key=${key}&q=${this.link}`)
       this.details = res.data
     }
