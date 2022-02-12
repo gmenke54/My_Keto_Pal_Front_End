@@ -34,6 +34,7 @@ export default {
     this.link = null
     await axios.post(`/posts/`, newPost)
     this.$store.dispatch('getFeed')
+    this.$store.dispatch('setUserId')
     }
   }
 

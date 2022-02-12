@@ -4,11 +4,17 @@
       <div v-if="this.$store.state.profile">
         <div class="pic-cont">
           <div class="activity" :class="color">{{this.activity}}</div>
-          <img @mouseover="dispEdit=true" @mouseleave="dispEdit=false" :src="this.$store.state.profile.img" class="pic" alt="profile picture">
+          <!-- <img @mouseover="dispEdit=true" @mouseleave="dispEdit=false" :src="this.$store.state.profile.img" class="pic" alt="profile picture"> -->
           <div v-if="dispEdit" class="edit">click to edit</div>
           
         </div>
         <div class="name">{{ this.$store.state.profile.name}}, {{this.$store.state.profile.age}}</div>
+        <div class="nut" @mouseover="this.show=true" @mouseleave="this.show=false" >
+          <div v-if="show" class="hole goals">Goals</div>
+          <img  :class="this.blur" :src="this.$store.state.profile.img" class="pic hole" alt="profile picture">
+            <!-- make this image blurry on mouseover of doughnut -->
+          <DoughnutChart :chartData="goalData" :options="this.options" />
+        </div>
         <div>{{this.$store.state.user.email}}</div>
         <div @dblclick="togDisplay" class="click">
           <div v-if="displayForm">
@@ -20,7 +26,10 @@
           <div v-else>Current Weight: {{this.$store.state.profile.cur_weight}}</div>
           </div>
         <div>Goal Weight: {{this.$store.state.profile.goal_weight}}</div>
-        <!-- <div>Favorite Food: {{this.favFood}}</div> -->
+        <div>My Posts</div>
+        <div :key=element.id v-for="element in this.$store.state.profile.my_posts" >
+          <FeedCard :element="element" :delete="true" />
+        </div>
         <div class="btn" @click="delProfile">Clear Profile</div>
       </div>
       <div v-else>
@@ -36,6 +45,8 @@
 <script>
 import axios from 'axios'
 import AddProfile from '@/components/AddProfile.vue'
+import FeedCard from '@/components/FeedCard.vue'
+import { DoughnutChart, BarChart } from 'vue-chart-3';
 
 export default {
   name: 'Profile',
@@ -44,10 +55,23 @@ export default {
     displayForm: false,
     dispEdit: false,
     color: 'blue',
-    favFood: null
+    favFood: null,
+    options: {
+        // responsive: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      },
+      blur: 'clear',
+    show: false
   }),
+
   components: {
-    AddProfile
+    AddProfile,
+    FeedCard,
+    DoughnutChart
   },
   computed: {
     activity(){
@@ -60,6 +84,23 @@ export default {
       } else {
         this.color = "gold"
         return "Very Active"
+      }
+    },
+    goalData(){
+      // let color = '#3181CE'
+      // let rem_carbs = this.$store.state.profile.daily_carb-this.$store.state.curCarbs
+      // if (rem_carbs<= 0){
+      //   rem_carbs = 0
+      //   color = 'rgb(165, 70, 70)';
+      // }
+      return {
+        labels: ['Daily Carbs', 'Daily Fats', 'Daily Sugars'],
+        datasets: [
+          {
+            data: [this.$store.state.profile.daily_carb.toFixed(1), this.$store.state.profile.daily_fat.toFixed(1), this.$store.state.profile.daily_sugar.toFixed(1)],
+            backgroundColor: ['rgb(165, 70, 70)', '#3181CE', '#8ee696', ],
+          },
+        ],
       }
     },
   },
@@ -92,6 +133,23 @@ export default {
 </script>
 
 <style scoped>
+.nut{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+.hole{
+  position: absolute;
+  top: 25.65%;
+  text-align: center;
+  font-weight: 700;
+  font-size: 33px
+}
+.goals{
+  z-index: 1;
+  top: 44.5%
+}
 .profile{
   display: flex;
   flex-direction: column;
@@ -112,8 +170,8 @@ export default {
 }
 
 .pic{
-  height: 200px;
-  border: 2px solid #3181CE;
+  height: 195px;
+  /* border: 2px solid #3181CE; */
   border-radius: 300px
 }
 .click{
@@ -153,4 +211,8 @@ export default {
 .gold{
   background-color: rgb(224, 198, 46)
 }
+.blur{
+  opacity: .6;
+}
+
 </style>

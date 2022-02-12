@@ -2,7 +2,7 @@
   <div class="feed-page">
   <AddFeed />
   <div :key=element.id v-for="element in this.$store.state.feed" >
-    <FeedCard :element="element" />
+    <FeedCard :element="element" :delete="false" />
   </div>
   </div>
 </template>

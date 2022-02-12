@@ -101,9 +101,6 @@ export default createStore({
     },
     async getFeed(state) {
       const posts = await axios.get('/posts');
-      // const recipes = await axios.get('/recipes');
-      // console.log(posts.data, recipes.data);
-      // let feed = concat(posts.data, recipes.data);
       state.commit('setFeed', posts.data);
     }
   },
