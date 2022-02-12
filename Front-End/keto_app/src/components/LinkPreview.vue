@@ -32,7 +32,7 @@ export default {
           key = process.env.VUE_APP_LINKTHREE
           break
       }
-      const res = await axios.get(`http://api.linkpreview.net/?key=${key}&q=${this.link}`)
+      const res = await axios.get(`https://api.linkpreview.net/?key=${key}&q=${this.link}`)
       this.details = res.data
     }
   },
