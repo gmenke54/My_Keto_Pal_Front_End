@@ -65,7 +65,6 @@ export default {
         this.dispBtn=true
       }else {
         console.log('item not found')
-
         let res = await axios.get(`https://api.edamam.com/api/nutrition-data?app_id=${process.env.VUE_APP_ID}&app_key=${process.env.VUE_APP_KEY}&nutrition-type=cooking&ingr=${this.newFood}`)
         let nutrients = res.data
         let transf = 0.0
@@ -74,7 +73,6 @@ export default {
         } catch {
           transf = 0.0
         }
-
         try {
           let foodObj = {
           days: [curDay.id],
@@ -95,9 +93,6 @@ export default {
           sodium_dv: nutrients.totalDaily.NA.quantity
         }
         let response = await axios.post(`/foods/`, foodObj)
-
-
-        
         let resp = await axios.get('/days')
         console.log(resp.data)
         let id = this.$store.state.user.id

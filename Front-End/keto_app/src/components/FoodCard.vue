@@ -36,7 +36,7 @@ export default {
     showLabel: false,
     dispLoading: false,
     error: false,
-    dispCancel: false
+    dispCancel: false,
   }),
   computed:{
     placeholder(){
@@ -45,7 +45,10 @@ export default {
       } else {
         return this.food.name
       }
-    }
+    },
+    // curDate(){
+    //     return this.$store.state.day.date
+    // }
   },
   methods: {
     cancel(){
@@ -62,7 +65,7 @@ export default {
     async delFood(){
       console.log(this.food.id)
       console.log(this.food.days)
-      let curDay = this.$store.state.day
+      const curDay = this.$store.state.day
       console.log(curDay)
       let newArr = this.food.days.filter(dayId => dayId !== curDay.id)
       console.log(newArr)
@@ -73,7 +76,8 @@ export default {
       let resp = await axios.get('/days')
       console.log(resp.data)
       let id = this.$store.state.user.id
-      const result = resp.data.filter(day => day.user_id===id && day.date===this.$store.state.day.date)
+      console.log(curDay)
+      const result = resp.data.filter(day => day.user_id===id && day.date===curDay.date)
       console.log(result[0])
       this.$store.commit('setDay', result[0])
     },
@@ -83,53 +87,142 @@ export default {
     async postFood(){
       this.error=false
       this.dispLoading = true
-      let res = await axios.get(`https://api.edamam.com/api/nutrition-data?app_id=${process.env.VUE_APP_ID}&app_key=${process.env.VUE_APP_KEY}&nutrition-type=cooking&ingr=${this.newFood}`)
-      let nutrients = res.data
-      console.log('posting food')
-      console.log(this.$store.state.day.id)
-      let transf = 0.0
-      try {
-        transf = nutrients.totalNutrients.FATRN.quantity
-      } catch {
-        transf = 0.0
+
+      let curDay = this.$store.state.day
+      let locRes = await axios.get('/foods')
+      console.log(locRes.data)
+      const initialSearch = locRes.data.filter(food => food.name === this.newFood)
+
+
+      if(initialSearch.length!==0){
+        const isCurDay = initialSearch[initialSearch.length-1].days.filter(dayId => dayId === curDay.id)
+        if (isCurDay.length !== 0){
+          this.newFood = this.newFood.padEnd(this.newFood.length+1, ' ')
+        }
       }
-      try {
-        let foodObj = {
-        days: [this.$store.state.day.id],
-		    name: this.newFood,
-		    weight: nutrients.totalWeight,
-		    carbs: nutrients.totalNutrients.CHOCDF.quantity,
-		    calories: nutrients.calories,
-	    	fat: nutrients.totalNutrients.FAT.quantity,
-		    protein: nutrients.totalNutrients.PROCNT.quantity,
-		    sugar: nutrients.totalNutrients.SUGAR.quantity,
-		    fiber: nutrients.totalNutrients.FIBTG.quantity,
-		    saturated: nutrients.totalNutrients.FASAT.quantity,
-		    trans: transf,
-		    chol: nutrients.totalNutrients.CHOLE.quantity,
-		    sodium: nutrients.totalNutrients.NA.quantity,
-		    added_sugar: 0.0,
-		    chol_dv: nutrients.totalDaily.CHOLE.quantity,
-		    sodium_dv: nutrients.totalDaily.NA.quantity
-      }
-      let response = await axios.post(`/foods/`, foodObj)
-      this.delFood()
-      let resp = await axios.get('/days')
-      console.log(resp.data)
-      let id = this.$store.state.user.id
-      const result = resp.data.filter(day => day.user_id===id && day.date===this.$store.state.day.date)
-      console.log(result[0])
-      this.$store.commit('setDay', result[0])
-      this.newFood = null
-      this.dispLoading=false
-      this.dispUpdate=false
-      } catch {
-        this.dispCancel = true
-        this.error = true
+
+      const found = locRes.data.filter(food => food.name === this.newFood)
+        if (found.length!==0){
+        console.log('found')
+        let newArr = found[0].days
+        newArr.push(curDay.id)
+        await axios.put(`https://ketosis-backend.herokuapp.com/foods/${found[0].id}`, { days: newArr })
+        this.delFood()
+        let resp = await axios.get('/days')
+        console.log(resp.data)
+        let id = this.$store.state.user.id
+        console.log(curDay)
+        const result = resp.data.filter(day => day.user_id===id && day.date===curDay.date)
+        console.log(result[0])
+        this.$store.commit('setDay', result[0])
+        this.newFood = null
         this.dispLoading=false
-        this.newFood= null
-        console.log('caught error')
+        this.dispUpdate=false
+      }else {
+        console.log('item not found')
+        let res = await axios.get(`https://api.edamam.com/api/nutrition-data?app_id=${process.env.VUE_APP_ID}&app_key=${process.env.VUE_APP_KEY}&nutrition-type=cooking&ingr=${this.newFood}`)
+        let nutrients = res.data
+        let transf = 0.0
+        try {
+          transf = nutrients.totalNutrients.FATRN.quantity
+        } catch {
+          transf = 0.0
+        }
+        try {
+          let foodObj = {
+          days: [curDay.id],
+          name: this.newFood,
+          weight: nutrients.totalWeight,
+          carbs: nutrients.totalNutrients.CHOCDF.quantity,
+          calories: nutrients.calories,
+          fat: nutrients.totalNutrients.FAT.quantity,
+          protein: nutrients.totalNutrients.PROCNT.quantity,
+          sugar: nutrients.totalNutrients.SUGAR.quantity,
+          fiber: nutrients.totalNutrients.FIBTG.quantity,
+          saturated: nutrients.totalNutrients.FASAT.quantity,
+          trans: transf,
+          chol: nutrients.totalNutrients.CHOLE.quantity,
+          sodium: nutrients.totalNutrients.NA.quantity,
+          added_sugar: 0.0,
+          chol_dv: nutrients.totalDaily.CHOLE.quantity,
+          sodium_dv: nutrients.totalDaily.NA.quantity
+        }
+        let response = await axios.post(`/foods/`, foodObj)
+        this.delFood()
+        let resp = await axios.get('/days')
+        console.log(resp.data)
+        let id = this.$store.state.user.id
+        const result = resp.data.filter(day => day.user_id===id && day.date===this.date)
+        console.log(result[0])
+        this.$store.commit('setDay', result[0])
+        this.newFood = null
+        this.dispLoading=false
+        this.dispUpdate=false
+        } catch {
+          this.dispCancel = true
+          this.error = true
+          this.dispLoading=false
+          this.newFood= null
+          console.log('caught error')
+        }
       }
+
+
+// Old version:
+// ///////////////////////////////////////
+      // let res = await axios.get(`https://api.edamam.com/api/nutrition-data?app_id=${process.env.VUE_APP_ID}&app_key=${process.env.VUE_APP_KEY}&nutrition-type=cooking&ingr=${this.newFood}`)
+      // let nutrients = res.data
+      // console.log('posting food')
+      // console.log(this.$store.state.day.id)
+      // let transf = 0.0
+      // try {
+      //   transf = nutrients.totalNutrients.FATRN.quantity
+      // } catch {
+      //   transf = 0.0
+      // }
+      // try {
+      //   let foodObj = {
+      //   days: [this.$store.state.day.id],
+		  //   name: this.newFood,
+		  //   weight: nutrients.totalWeight,
+		  //   carbs: nutrients.totalNutrients.CHOCDF.quantity,
+		  //   calories: nutrients.calories,
+	    // 	fat: nutrients.totalNutrients.FAT.quantity,
+		  //   protein: nutrients.totalNutrients.PROCNT.quantity,
+		  //   sugar: nutrients.totalNutrients.SUGAR.quantity,
+		  //   fiber: nutrients.totalNutrients.FIBTG.quantity,
+		  //   saturated: nutrients.totalNutrients.FASAT.quantity,
+		  //   trans: transf,
+		  //   chol: nutrients.totalNutrients.CHOLE.quantity,
+		  //   sodium: nutrients.totalNutrients.NA.quantity,
+		  //   added_sugar: 0.0,
+		  //   chol_dv: nutrients.totalDaily.CHOLE.quantity,
+		  //   sodium_dv: nutrients.totalDaily.NA.quantity
+      // }
+      // let response = await axios.post(`/foods/`, foodObj)
+
+
+
+      // this.delFood()
+
+
+
+      // let resp = await axios.get('/days')
+      // console.log(resp.data)
+      // let id = this.$store.state.user.id
+      // const result = resp.data.filter(day => day.user_id===id && day.date===this.$store.state.day.date)
+      // console.log(result[0])
+      // this.$store.commit('setDay', result[0])
+      // this.newFood = null
+      // this.dispLoading=false
+      // this.dispUpdate=false
+      // } catch {
+      //   this.dispCancel = true
+      //   this.error = true
+      //   this.dispLoading=false
+      //   this.newFood= null
+      //   console.log('caught error')
+      // }
 
     }
   }
