@@ -27,8 +27,6 @@ export default {
   methods: {
     async postFood(){
       this.dispLoading = true
-      let res = await axios.get(`https://api.edamam.com/api/nutrition-data?app_id=${process.env.VUE_APP_ID}&app_key=${process.env.VUE_APP_KEY}&nutrition-type=cooking&ingr=${this.newFood}`)
-      let nutrients = res.data
       let curDay = this.$store.state.day
       if (curDay === null){
         const res = await axios.post(`/days/`, {
@@ -38,48 +36,84 @@ export default {
         })
         curDay = res.data
       }
-      let transf = 0.0
-      try {
-        transf = nutrients.totalNutrients.FATRN.quantity
-      } catch {
-        transf = 0.0
+      let locRes = await axios.get('/foods')
+      console.log(locRes.data)
+      const initialSearch = locRes.data.filter(food => food.name === this.newFood)
+
+      if(initialSearch.length!==0){
+        const isCurDay = initialSearch[initialSearch.length-1].days.filter(dayId => dayId === curDay.id)
+        if (isCurDay.length !== 0){
+          this.newFood = this.newFood.padEnd(this.newFood.length+1, ' ')
+        }
       }
 
-      try {
-        let foodObj = {
-        days: [curDay.id],
-		    name: this.newFood,
-		    weight: nutrients.totalWeight,
-		    carbs: nutrients.totalNutrients.CHOCDF.quantity,
-		    calories: nutrients.calories,
-	    	fat: nutrients.totalNutrients.FAT.quantity,
-		    protein: nutrients.totalNutrients.PROCNT.quantity,
-		    sugar: nutrients.totalNutrients.SUGAR.quantity,
-		    fiber: nutrients.totalNutrients.FIBTG.quantity,
-		    saturated: nutrients.totalNutrients.FASAT.quantity,
-		    trans: transf,
-		    chol: nutrients.totalNutrients.CHOLE.quantity,
-		    sodium: nutrients.totalNutrients.NA.quantity,
-		    added_sugar: 0.0,
-		    chol_dv: nutrients.totalDaily.CHOLE.quantity,
-		    sodium_dv: nutrients.totalDaily.NA.quantity
-      }
-      let response = await axios.post(`/foods/`, foodObj)
-      let resp = await axios.get('/days')
-      console.log(resp.data)
-      let id = this.$store.state.user.id
-      const result = resp.data.filter(day => day.user_id===id && day.date===this.date)
-      console.log(result[0])
-      this.$store.commit('setDay', result[0])
-      this.newFood = null
-      this.placeholder = "1 cup cheddar cheese"
-      this.dispLoading=false
-      this.dispBtn=true
-      } catch {
+      const found = locRes.data.filter(food => food.name === this.newFood)
+      if (found.length!==0){
+        console.log('found')
+        let newArr = found[0].days
+        newArr.push(curDay.id)
+        await axios.put(`https://ketosis-backend.herokuapp.com/foods/${found[0].id}`, { days: newArr })
+        let resp = await axios.get('/days')
+        console.log(resp.data)
+        let id = this.$store.state.user.id
+        const result = resp.data.filter(day => day.user_id===id && day.date===this.date)
+        console.log(result[0])
+        this.$store.commit('setDay', result[0])
+        this.newFood = null
+        this.placeholder = "1 cup cheddar cheese"
         this.dispLoading=false
-        this.placeholder = "unknown food - try again"
-        this.newFood= null
-        console.log('caught error')
+        this.dispBtn=true
+      }else {
+        console.log('item not found')
+
+        let res = await axios.get(`https://api.edamam.com/api/nutrition-data?app_id=${process.env.VUE_APP_ID}&app_key=${process.env.VUE_APP_KEY}&nutrition-type=cooking&ingr=${this.newFood}`)
+        let nutrients = res.data
+        let transf = 0.0
+        try {
+          transf = nutrients.totalNutrients.FATRN.quantity
+        } catch {
+          transf = 0.0
+        }
+
+        try {
+          let foodObj = {
+          days: [curDay.id],
+          name: this.newFood,
+          weight: nutrients.totalWeight,
+          carbs: nutrients.totalNutrients.CHOCDF.quantity,
+          calories: nutrients.calories,
+          fat: nutrients.totalNutrients.FAT.quantity,
+          protein: nutrients.totalNutrients.PROCNT.quantity,
+          sugar: nutrients.totalNutrients.SUGAR.quantity,
+          fiber: nutrients.totalNutrients.FIBTG.quantity,
+          saturated: nutrients.totalNutrients.FASAT.quantity,
+          trans: transf,
+          chol: nutrients.totalNutrients.CHOLE.quantity,
+          sodium: nutrients.totalNutrients.NA.quantity,
+          added_sugar: 0.0,
+          chol_dv: nutrients.totalDaily.CHOLE.quantity,
+          sodium_dv: nutrients.totalDaily.NA.quantity
+        }
+        let response = await axios.post(`/foods/`, foodObj)
+
+
+        
+        let resp = await axios.get('/days')
+        console.log(resp.data)
+        let id = this.$store.state.user.id
+        const result = resp.data.filter(day => day.user_id===id && day.date===this.date)
+        console.log(result[0])
+        this.$store.commit('setDay', result[0])
+        this.newFood = null
+        this.placeholder = "1 cup cheddar cheese"
+        this.dispLoading=false
+        this.dispBtn=true
+        } catch {
+          this.dispLoading=false
+          this.placeholder = "unknown food - try again"
+          this.newFood= null
+          console.log('caught error')
+        }
       }
     }
   }

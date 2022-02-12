@@ -19,6 +19,7 @@ export default {
   },
   methods: {
     async getDetails(){
+      // need to move this to global store and call it on beforeCreate of app.vue and whenever a post is made 
       let random = Math.floor(Math.random() * 3)
       let key = ''
       switch(random){
@@ -31,6 +32,7 @@ export default {
         case 2:
           key = process.env.VUE_APP_LINKTHREE
           break
+        // add 2-3 more keys and increase randomizer
       }
       const res = await axios.get(`https://api.linkpreview.net/?key=${key}&q=${this.link}`)
       this.details = res.data

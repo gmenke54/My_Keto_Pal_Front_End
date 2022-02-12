@@ -61,7 +61,17 @@ export default {
     },
     async delFood(){
       console.log(this.food.id)
-      await axios.delete(`/foods/${this.food.id}`)
+      console.log(this.food.days)
+      let curDay = this.$store.state.day
+      console.log(curDay)
+      let newArr = this.food.days.filter(dayId => dayId !== curDay.id)
+      console.log(newArr)
+      const obj = {
+        days: newArr
+      }
+      await axios.put(`/foods/${this.food.id}`, obj)
+
+      // await axios.delete(`/foods/${this.food.id}`)
       let resp = await axios.get('/days')
       console.log(resp.data)
       let id = this.$store.state.user.id

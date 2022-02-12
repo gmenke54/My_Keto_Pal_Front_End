@@ -28,6 +28,7 @@ export default {
     }
     this.$store.dispatch('setUserId')
     this.$store.dispatch('getFeed')
+    
   },
   methods: {
     logout(){
