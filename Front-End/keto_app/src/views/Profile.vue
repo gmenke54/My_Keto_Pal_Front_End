@@ -4,16 +4,13 @@
       <div v-if="this.$store.state.profile">
         <div class="pic-cont">
           <div class="activity" :class="color">{{this.activity}}</div>
-          <!-- <img @mouseover="dispEdit=true" @mouseleave="dispEdit=false" :src="this.$store.state.profile.img" class="pic" alt="profile picture"> -->
           <div v-if="dispEdit" class="edit">click to edit</div>
         </div>
         <div class="name">{{ this.$store.state.profile.name}}, {{this.$store.state.profile.age}}</div>
-        <!-- <div class="nut" @mouseover="this.show=true" @mouseleave="this.show=false" > -->
         <div class="nut" @mouseover="togglePictureOn()" @mouseleave="togglePictureOff()" >
 
           <div v-if="show" class="hole goals">Goals</div>
           <img  :src="this.$store.state.profile.img" class="pic hole" :class="blur" alt="profile picture">
-            <!-- make this image blurry on mouseover of doughnut -->
           <DoughnutChart :chartData="goalData" :options="this.options" />
         </div>
         <LineChart :chartData="weightData" :options="this.options"/>
@@ -91,9 +88,6 @@ export default {
     Toggle
     
   },
-  // beforeMount(){
-  //   dispValue()
-  // }
   computed: {
     dispValue(){
       if (this.$store.state.profile.decimals === 0){

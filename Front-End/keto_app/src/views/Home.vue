@@ -123,9 +123,6 @@ export default {
     date(){
       this.getAllDays()
     },
-    // storeDay(){
-    //   this.getAllDays()
-    // }
   },
    mounted(){
     this.getAllDays()
@@ -196,9 +193,7 @@ export default {
       }
     },
     day(){
-      // console.log(this.date)
       let date =  this.date.toLocaleString('en-US').slice(0,9)
-      // console.log(date)
       let newDate = date.replace(',', '')
       let splitArr = newDate.split("/")
       let month = ''
