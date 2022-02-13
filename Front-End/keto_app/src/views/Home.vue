@@ -52,7 +52,7 @@
       </div>
     </div>
     <div v-else>
-      Please Login
+      <Signin />
     </div>
   </div>
 </template>
@@ -63,6 +63,7 @@ import 'v-calendar/dist/style.css';
 import DayCard from '../components/DayCard.vue'
 import MainDay from '../components/MainDay.vue'
 import AddFood from '../components/AddFood.vue'
+import Signin from '../views/Signin.vue';
 
 import { DoughnutChart, BarChart } from 'vue-chart-3';
 import axios from 'axios'
@@ -75,7 +76,8 @@ export default {
     MainDay,
     AddFood,
     DoughnutChart,
-    BarChart
+    BarChart,
+    Signin
   },
   data() {
     return {

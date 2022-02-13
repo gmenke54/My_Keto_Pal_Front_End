@@ -16,6 +16,9 @@ export default {
   data: ()=> ({
     news: null
   }),
+  beforeCreate(){
+    this.$store.dispatch('getFeed')
+  },
   components: {
     FeedCard,
     AddFeed,

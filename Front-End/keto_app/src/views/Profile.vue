@@ -132,7 +132,7 @@ export default {
         let monthNum = parseInt(this.$store.state.profile.created_at.slice(5,7))
         let allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         let monthsArr = []
-        let weightArr = [this.$store.state.profile.cur_weight.toFixed(this.$store.state.profile.decimals)]
+        let weightArr = [this.$store.state.profile.goal_weight]
         let colorsArr = []
         for (let i=0; i<months; i++){
           if (i===months-1){
@@ -150,28 +150,42 @@ export default {
             monthsArr.push(allMonths[i])
           }
         }
-        const a = Math.log(this.$store.state.profile.cur_weight);
-        const b = Math.log(this.$store.state.profile.goal_weight);
-        let c = (a - b) / (months - 1);
+        // const a = Math.log(this.$store.state.profile.cur_weight);
+        // const b = Math.log(this.$store.state.profile.goal_weight);
+        console.log(months)
+        let c = (this.$store.state.profile.cur_weight - this.$store.state.profile.goal_weight) / (months - 1);
+
+        // for (let i = 1; i < months - 1; i++) {
+        //   weightArr.push((2.718 ** (a - i * c)).toFixed(this.$store.state.profile.decimals));
+        // }
 
         for (let i = 1; i < months - 1; i++) {
-          weightArr.push((2.718 ** (a - i * c)).toFixed(this.$store.state.profile.decimals));
+          let weightPoint = weightArr[i - 1] + (i * c) / 3
+          console.log(weightPoint)
+          weightArr.push(weightPoint);
+          console.log(weightArr)
         }
+
 
         // let loss = (this.$store.state.profile.cur_weight - this.$store.state.profile.goal_weight) / this.$store.state.profile.keto_weeks * 5
         // for (let i=0; i<months; i++){
         //   weightArr.push((this.$store.state.profile.cur_weight - (i*loss)).toFixed(this.$store.state.profile.decimals))
         // }
-        weightArr.push(this.$store.state.profile.goal_weight.toFixed(this.$store.state.profile.decimals));
+        weightArr.push(this.$store.state.profile.cur_weight);
+        weightArr = weightArr.reverse()
 
         // console.log(monthsArr)
         console.log(weightArr)
+
+        let newArr = weightArr.map((point)=> point.toFixed(this.$store.state.profile.decimals))
+
+        console.log(newArr)
 
         return {
         labels: monthsArr,
         datasets: [
           {
-            data: weightArr,
+            data: newArr,
             backgroundColor: colorsArr,
           },
         ],

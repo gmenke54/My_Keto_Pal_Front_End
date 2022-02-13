@@ -1,9 +1,12 @@
 <template>
   <div>
     <div class="nav">
+      <div class="circle" v-if="this.$store.state.isAuthenticated && this.$store.state.profile">
+        <img  class="img" @click="goProfile" :src="this.$store.state.profile.img">
+      </div>
       <router-link v-if="this.$store.state.isAuthenticated" to="/">myketopal</router-link>
       <router-link v-if="this.$store.state.isAuthenticated" to="/feed">Feed</router-link>
-      <router-link v-if="this.$store.state.isAuthenticated" to="/profile">Profile</router-link>
+      <!-- <router-link v-if="this.$store.state.isAuthenticated" to="/profile">Profile</router-link> -->
       <router-link to="/about">About</router-link>
       <router-link v-if="this.$store.state.isAuthenticated === false" to="/signup">Sign Up</router-link> 
       <router-link v-if="this.$store.state.isAuthenticated === false" to="/signin">Login</router-link>
@@ -27,7 +30,7 @@ export default {
       axios.defaults.headers.common['Authorization'] = ''
     }
     this.$store.dispatch('setUserId')
-    this.$store.dispatch('getFeed')
+    // this.$store.dispatch('getFeed')
     
   },
   methods: {
@@ -47,6 +50,10 @@ export default {
           .catch(error => {
             console.log(error)
           })
+    },
+    goProfile(){
+      console.log('going to profile')
+      this.$router.push('/profile')
     }
   }
 }
@@ -94,5 +101,24 @@ a:hover, .a:hover {
   background-color: white;
   border-bottom: 0.5px solid #E7E9EB;
   margin-bottom: 10px;
+}
+
+.circle{
+  border-radius: 50%;
+
+  border: 2px solid #3181CE;
+  height: 45px;
+  width: 45px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.img{
+  height: 45px;
+  cursor: pointer;
+}
+.circle:hover{
+  border: 2px solid #4a9fee;
 }
 </style>
