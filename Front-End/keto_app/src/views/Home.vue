@@ -24,7 +24,7 @@
             <div class="hole" v-if="dispSugGoal===false">Sugars</div>
           </transition>
           <transition name="fade">
-            <div class="goal" v-if="dispSugGoal">Daily Goal: {{this.$store.state.profile.daily_sugar.toFixed(1)}}</div>
+            <div class="goal" v-if="dispSugGoal">Daily Goal: {{this.$store.state.profile.daily_sugar.toFixed(this.$store.state.profile.decimals)}}</div>
           </transition>
           <DoughnutChart :chartData="sugarData" :options="this.options" />
         </div>
@@ -33,7 +33,7 @@
             <div class="hole" v-if="dispCarbGoal===false">Carbs</div>
           </transition>
           <transition name="fade">
-            <div class="goal" v-if="dispCarbGoal">Daily Goal: {{this.$store.state.profile.daily_carb.toFixed(1)}}</div>
+            <div class="goal" v-if="dispCarbGoal">Daily Goal: {{this.$store.state.profile.daily_carb.toFixed(this.$store.state.profile.decimals)}}</div>
           </transition>
           <DoughnutChart :chartData="carbData" :options="this.options" />
         </div>
@@ -42,7 +42,7 @@
             <div class="hole" v-if="dispGoal===false">Fats</div>
           </transition>
           <transition name="fade">
-            <div class="goal" v-if="dispGoal">Daily Goal: {{this.$store.state.profile.daily_fat.toFixed(1)}}</div>
+            <div class="goal" v-if="dispGoal">Daily Goal: {{this.$store.state.profile.daily_fat.toFixed(this.$store.state.profile.decimals)}}</div>
           </transition>
           <span class="span">
             <DoughnutChart :chartData="fatData" :options="this.options" />
@@ -143,7 +143,7 @@ export default {
         labels: ['Consumed Carbs', 'Remaining Carbs'],
         datasets: [
           {
-            data: [this.$store.state.curCarbs.toFixed(1), (rem_carbs.toFixed(1))],
+            data: [this.$store.state.curCarbs.toFixed(this.$store.state.profile.decimals), (rem_carbs.toFixed(this.$store.state.profile.decimals))],
             backgroundColor: [color, 'white'],
           },
         ],
@@ -160,7 +160,7 @@ export default {
         labels: ['Consumed Sugars', 'Remaining Sugars'],
         datasets: [
           {
-            data: [this.$store.state.curSugar.toFixed(1), (rem_carbs.toFixed(1))],
+            data: [this.$store.state.curSugar.toFixed(this.$store.state.profile.decimals), (rem_carbs.toFixed(this.$store.state.profile.decimals))],
             backgroundColor: [color, 'white'],
           },
         ],
@@ -177,7 +177,7 @@ export default {
         labels: ['Consumed Fats', 'Needed Fats'],
         datasets: [
           {
-            data: [this.$store.state.curFat.toFixed(1), (rem_carbs.toFixed(1))],
+            data: [this.$store.state.curFat.toFixed(this.$store.state.profile.decimals), (rem_carbs.toFixed(this.$store.state.profile.decimals))],
             backgroundColor: [color, 'white'],
           },
         ],
@@ -291,7 +291,7 @@ export default {
         datasets: [
           {
             label: 'Carbs',
-            data: [newArr[0].toFixed(1), newArr[1].toFixed(1), newArr[2].toFixed(1), newArr[3].toFixed(1), newArr[4].toFixed(1), newArr[5].toFixed(1), newArr[6].toFixed(1)],
+            data: [newArr[0].toFixed(this.$store.state.profile.decimals), newArr[1].toFixed(this.$store.state.profile.decimals), newArr[2].toFixed(this.$store.state.profile.decimals), newArr[3].toFixed(this.$store.state.profile.decimals), newArr[4].toFixed(this.$store.state.profile.decimals), newArr[5].toFixed(this.$store.state.profile.decimals), newArr[6].toFixed(this.$store.state.profile.decimals)],
             // backgroundColor: ['#3181CE', '#3181CE', '#3181CE', '#3181CE', '#3181CE', '#3181CE', '#3181CE'],
             backgroundColor: colorArr,
           },

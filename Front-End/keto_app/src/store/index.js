@@ -34,7 +34,8 @@ export default createStore({
     curSugar: 0.0,
     curFat: 0.0,
     allDays: null,
-    feed: []
+    feed: [],
+    decimals: 0
   },
   mutations: {
     initializeStore(state) {
@@ -84,6 +85,9 @@ export default createStore({
     },
     setFeed(state, payload) {
       state.feed = payload;
+    },
+    setDecimals(state, payload) {
+      state.decimals = payload;
     }
   },
   actions: {

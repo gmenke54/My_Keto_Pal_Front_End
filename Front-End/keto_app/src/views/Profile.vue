@@ -6,7 +6,6 @@
           <div class="activity" :class="color">{{this.activity}}</div>
           <!-- <img @mouseover="dispEdit=true" @mouseleave="dispEdit=false" :src="this.$store.state.profile.img" class="pic" alt="profile picture"> -->
           <div v-if="dispEdit" class="edit">click to edit</div>
-          
         </div>
         <div class="name">{{ this.$store.state.profile.name}}, {{this.$store.state.profile.age}}</div>
         <div class="nut" @mouseover="this.show=true" @mouseleave="this.show=false" >
@@ -27,6 +26,10 @@
           <div v-else>Current Weight: {{this.$store.state.profile.cur_weight}}</div>
           </div>
         <div>Goal Weight: {{this.$store.state.profile.goal_weight}}</div>
+        <div v-if="this.dispValue" class="flex-row">
+          <div>Track Decimals:</div>
+          <Toggle v-model="value" class="toggle-blue" offLabel="0" onLabel="1" @change="this.toggle()"/>
+        </div>
         <div>My Posts</div>
         <div :key=element.id v-for="element in this.$store.state.profile.my_posts" >
           <FeedCard :element="element" :delete="true" />
@@ -48,6 +51,7 @@ import axios from 'axios'
 import AddProfile from '@/components/AddProfile.vue'
 import FeedCard from '@/components/FeedCard.vue'
 import { DoughnutChart, BarChart, LineChart } from 'vue-chart-3';
+import Toggle from '@vueform/toggle'
 
 export default {
   name: 'Profile',
@@ -66,24 +70,39 @@ export default {
         }
       },
       blur: 'clear',
-    show: false,
-          options: {
+      show: false,
+      options: {
         // responsive: false,
         plugins: {
           legend: {
             display: false
           }
         }
-      }
+      },
+      value: null
   }),
 
   components: {
     AddProfile,
     FeedCard,
     DoughnutChart,
-    LineChart
+    LineChart,
+    Toggle
+    
   },
+  // beforeMount(){
+  //   dispValue()
+  // }
   computed: {
+    dispValue(){
+      if (this.$store.state.profile.decimals === 0){
+        this.value = false
+        return true
+      } else {
+        this.value = true
+        return true
+      }
+    },
     activity(){
       if (this.$store.state.profile.activ === 'low'){
         this.color = "red"
@@ -101,7 +120,7 @@ export default {
         labels: ['Daily Carbs', 'Daily Fats', 'Daily Sugars'],
         datasets: [
           {
-            data: [this.$store.state.profile.daily_carb.toFixed(1), this.$store.state.profile.daily_fat.toFixed(1), this.$store.state.profile.daily_sugar.toFixed(1)],
+            data: [this.$store.state.profile.daily_carb.toFixed(this.$store.state.profile.decimals), this.$store.state.profile.daily_fat.toFixed(this.$store.state.profile.decimals), this.$store.state.profile.daily_sugar.toFixed(this.$store.state.profile.decimals)],
             backgroundColor: ['rgb(165, 70, 70)', '#3181CE', '#8ee696', ],
           },
         ],
@@ -134,7 +153,7 @@ export default {
         }
         let loss = (this.$store.state.profile.cur_weight - this.$store.state.profile.goal_weight) / this.$store.state.profile.keto_weeks * 5
         for (let i=0; i<months; i++){
-          weightArr.push((this.$store.state.profile.cur_weight - (i*loss)).toFixed(1))
+          weightArr.push((this.$store.state.profile.cur_weight - (i*loss)).toFixed(this.$store.state.profile.decimals))
         }
         console.log(monthsArr)
         console.log(weightArr)
@@ -153,6 +172,30 @@ export default {
   },
 
   methods: {
+    async toggle(){
+      if(this.value === false){
+        // this.$store.commit('setDecimals', 0)
+        const res = await axios.put(`/profiles/${this.$store.state.user.id}`, {
+          user: this.$store.state.user.id,
+          user_id: this.$store.state.user.id,
+          decimals: 0
+        })
+        console.log('set to 0')
+        console.log(res.data)
+        this.$store.dispatch('setUserId')
+      } else {
+        // this.$store.commit('setDecimals', 1)
+          const res = await axios.put(`/profiles/${this.$store.state.user.id}`, {
+          user: this.$store.state.user.id,
+          user_id: this.$store.state.user.id,
+          decimals: 1
+        })
+        console.log('set to 1')
+        console.log(res.data)
+        this.$store.dispatch('setUserId')
+      }
+      
+    }, 
     togDisplay(){
       console.log('displaying')
       this.displayForm=true
@@ -180,6 +223,10 @@ export default {
 </script>
 
 <style scoped>
+.flex-row{
+  display: flex;
+  flex-direction: row;
+}
 .nut{
   position: relative;
   display: flex;
@@ -261,5 +308,13 @@ export default {
 .blur{
   opacity: .6;
 }
+.toggle-blue {
+  --toggle-bg-on: #3181CE;
+  
+  --toggle-border-on:#3181CE;
+}
+</style>
+
+<style src="@vueform/toggle/themes/default.css">
 
 </style>
