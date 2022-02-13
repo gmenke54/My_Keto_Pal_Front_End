@@ -98,7 +98,7 @@ export default {
   padding: 5px 0 5px 0;
   border-radius: 10px;
   box-shadow: 0px 0px 19px -5px rgba(0,0,0,0.7);
-  z-index: 3;
+  /* z-index: 3; */
 }
 .btnBar{
   display: flex;

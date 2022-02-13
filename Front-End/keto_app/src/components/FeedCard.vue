@@ -61,6 +61,7 @@ img{
   box-shadow: 0px 0px 12px -5px rgba(0,0,0,0.7);
   cursor: pointer;
   margin: 15px;
+  z-index: 4;
 }
 .link:hover{
    box-shadow: 0px 0px 18px -7px rgba(0,0,0,0.7);
