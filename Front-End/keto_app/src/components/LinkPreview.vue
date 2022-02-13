@@ -1,9 +1,9 @@
 <template>
   <div v-if="this.details" class="link-preview">
     <img :src="details.image" @mouseover="this.hover=true" @mouseleave="this.hover=false" @click="this.redirect()" alt="">
-    <div v-if="hover">
-      <div>{{details.title}}</div>
-      <div>{{details.description}}</div>
+    <div v-if="hover" class="hover">
+      <div class="title">{{details.title}}</div>
+      <div class="description">{{details.description}}</div>
     </div>
   </div>
 </template>
@@ -27,7 +27,6 @@ export default {
       window.open(this.details.url)
     },
     async getDetails(){
-      // need to move this to global store and call it on beforeCreate of app.vue and whenever a post is made 
       let random = Math.floor(Math.random() * 3)
       let key = ''
       switch(random){
@@ -49,7 +48,6 @@ export default {
         case 5:
           key = process.env.VUE_APP_LINKSIX
           break
-        // add 2-3 more keys and increase randomizer
       }
       const res = await axios.get(`https://api.linkpreview.net/?key=${key}&q=${this.link}`)
       this.details = res.data
@@ -62,7 +60,28 @@ export default {
 
 <style scoped>
 img{
-  max-width: 150px;
-  cursor: pointer;
+  max-height: 150px;
+  border-radius: 10px;
+}
+.hover{
+  position: absolute;
+  z-index: 2;
+  background-color: white;
+  color: rgb(59, 59, 59);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  box-shadow: 0px 0px 12px -5px rgba(0,0,0,0.7);
+  max-width: 250px;
+  padding: 10px;
+}
+.description{
+  font-size: 12px;
+  color: rgb(97, 97, 97);
+}
+.title{
+  font-weight: 500
 }
 </style>
