@@ -8,9 +8,11 @@
           <div v-if="dispEdit" class="edit">click to edit</div>
         </div>
         <div class="name">{{ this.$store.state.profile.name}}, {{this.$store.state.profile.age}}</div>
-        <div class="nut" @mouseover="this.show=true" @mouseleave="this.show=false" >
+        <!-- <div class="nut" @mouseover="this.show=true" @mouseleave="this.show=false" > -->
+        <div class="nut" @mouseover="togglePictureOn()" @mouseleave="togglePictureOff()" >
+
           <div v-if="show" class="hole goals">Goals</div>
-          <img  :class="this.blur" :src="this.$store.state.profile.img" class="pic hole" alt="profile picture">
+          <img  :src="this.$store.state.profile.img" class="pic hole" :class="blur" alt="profile picture">
             <!-- make this image blurry on mouseover of doughnut -->
           <DoughnutChart :chartData="goalData" :options="this.options" />
         </div>
@@ -23,7 +25,7 @@
               <button type="submit">Update</button>
             </form>
           </div>
-          <div v-else>Current Weight: {{this.$store.state.profile.cur_weight}}</div>
+          <div v-else>Starting Weight: {{this.$store.state.profile.cur_weight}}</div>
           </div>
         <div v-if="this.dispValue" class="flex-row">
           <div>Display Decimals</div>
@@ -150,14 +152,10 @@ export default {
             monthsArr.push(allMonths[i])
           }
         }
-        // const a = Math.log(this.$store.state.profile.cur_weight);
-        // const b = Math.log(this.$store.state.profile.goal_weight);
+
         console.log(months)
         let c = (this.$store.state.profile.cur_weight - this.$store.state.profile.goal_weight) / (months - 1);
 
-        // for (let i = 1; i < months - 1; i++) {
-        //   weightArr.push((2.718 ** (a - i * c)).toFixed(this.$store.state.profile.decimals));
-        // }
 
         for (let i = 1; i < months - 1; i++) {
           let weightPoint = weightArr[i - 1] + (i * c) / 3
@@ -167,14 +165,9 @@ export default {
         }
 
 
-        // let loss = (this.$store.state.profile.cur_weight - this.$store.state.profile.goal_weight) / this.$store.state.profile.keto_weeks * 5
-        // for (let i=0; i<months; i++){
-        //   weightArr.push((this.$store.state.profile.cur_weight - (i*loss)).toFixed(this.$store.state.profile.decimals))
-        // }
         weightArr.push(this.$store.state.profile.cur_weight);
         weightArr = weightArr.reverse()
 
-        // console.log(monthsArr)
         console.log(weightArr)
 
         let newArr = weightArr.map((point)=> point.toFixed(this.$store.state.profile.decimals))
@@ -195,9 +188,16 @@ export default {
   },
 
   methods: {
+    togglePictureOn(){
+        this.show = true
+        this.blur = 'blur'
+    },
+    togglePictureOff(){
+        this.show = false
+        this.blur = 'clear'
+    },
     async toggle(){
       if(this.value === false){
-        // this.$store.commit('setDecimals', 0)
         const res = await axios.put(`/profiles/${this.$store.state.user.id}`, {
           user: this.$store.state.user.id,
           user_id: this.$store.state.user.id,
@@ -207,7 +207,6 @@ export default {
         console.log(res.data)
         this.$store.dispatch('setUserId')
       } else {
-        // this.$store.commit('setDecimals', 1)
           const res = await axios.put(`/profiles/${this.$store.state.user.id}`, {
           user: this.$store.state.user.id,
           user_id: this.$store.state.user.id,
@@ -256,6 +255,7 @@ export default {
   display: flex;
   justify-content: center;
   margin: 10px;
+  z-index: 1;
 }
 .hole{
   position: absolute;
@@ -265,8 +265,9 @@ export default {
   font-size: 33px
 }
 .goals{
-  z-index: 1;
-  top: 44.5%
+  z-index: 2;
+  top: 44.5%;
+  color: white
 }
 .profile{
   display: flex;
@@ -330,7 +331,7 @@ export default {
   background-color: rgb(224, 198, 46)
 }
 .blur{
-  opacity: .6;
+  opacity: .8;
 }
 .toggle-blue {
   --toggle-bg-on: #3181CE;
