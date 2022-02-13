@@ -15,6 +15,7 @@
             <!-- make this image blurry on mouseover of doughnut -->
           <DoughnutChart :chartData="goalData" :options="this.options" />
         </div>
+        <LineChart :chartData="weightData" :options="this.options"/>
         <div>{{this.$store.state.user.email}}</div>
         <div @dblclick="togDisplay" class="click">
           <div v-if="displayForm">
@@ -46,7 +47,7 @@
 import axios from 'axios'
 import AddProfile from '@/components/AddProfile.vue'
 import FeedCard from '@/components/FeedCard.vue'
-import { DoughnutChart, BarChart } from 'vue-chart-3';
+import { DoughnutChart, BarChart, LineChart } from 'vue-chart-3';
 
 export default {
   name: 'Profile',
@@ -65,13 +66,22 @@ export default {
         }
       },
       blur: 'clear',
-    show: false
+    show: false,
+          options: {
+        // responsive: false,
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
   }),
 
   components: {
     AddProfile,
     FeedCard,
-    DoughnutChart
+    DoughnutChart,
+    LineChart
   },
   computed: {
     activity(){
@@ -87,12 +97,6 @@ export default {
       }
     },
     goalData(){
-      // let color = '#3181CE'
-      // let rem_carbs = this.$store.state.profile.daily_carb-this.$store.state.curCarbs
-      // if (rem_carbs<= 0){
-      //   rem_carbs = 0
-      //   color = 'rgb(165, 70, 70)';
-      // }
       return {
         labels: ['Daily Carbs', 'Daily Fats', 'Daily Sugars'],
         datasets: [
@@ -103,6 +107,49 @@ export default {
         ],
       }
     },
+    weightData(){
+        console.log(this.$store.state.profile.keto_weeks)
+        let months = Math.round(this.$store.state.profile.keto_weeks/4.5)
+        console.log('Months:', months)
+        let monthNum = parseInt(this.$store.state.profile.created_at.slice(5,7))
+        let allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        let monthsArr = []
+        let weightArr = []
+        let colorsArr = []
+        for (let i=0; i<months; i++){
+          if (i===months-1){
+            colorsArr.push('#8ee696')
+          } else {
+            colorsArr.push('#3181CE')
+          }
+        }
+        for (let i=monthNum-1; i<monthNum+months-1; i++){
+          if (i>11){
+            console.log(i-12)
+            monthsArr.push(allMonths[i-12])
+          } else {
+            console.log(i)
+            monthsArr.push(allMonths[i])
+          }
+        }
+        let loss = (this.$store.state.profile.cur_weight - this.$store.state.profile.goal_weight) / this.$store.state.profile.keto_weeks * 5
+        for (let i=0; i<months; i++){
+          weightArr.push((this.$store.state.profile.cur_weight - (i*loss)).toFixed(1))
+        }
+        console.log(monthsArr)
+        console.log(weightArr)
+
+        return {
+        labels: monthsArr,
+        datasets: [
+          {
+            data: weightArr,
+            backgroundColor: colorsArr,
+          },
+        ],
+      }
+
+    }
   },
 
   methods: {
