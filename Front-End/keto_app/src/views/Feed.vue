@@ -79,7 +79,7 @@ export default {
 .dummy{
   z-index: 2;
   min-width: 100%;
-  height: 100%;
+  min-height: 100%;
   max-height: 90vh;
   position: absolute;
   background-color: white;

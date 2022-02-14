@@ -193,28 +193,38 @@ export default {
       }
     },
     day(){
-      let date =  this.date.toLocaleString('en-US').slice(0,9)
-      let newDate = date.replace(',', '')
-      let splitArr = newDate.split("/")
-      let month = ''
-      let day = ''
-      if (splitArr[0].length === 1){
-        month = `0${splitArr[0]}`
-      } else{
-        month = `${splitArr[0]}`
+      try{
+
+        let date =  this.date.toLocaleString('en-US').slice(0,9)
+        let newDate = date.replace(',', '')
+        let splitArr = newDate.split("/")
+        let month = ''
+        let day = ''
+        if (splitArr[0].length === 1){
+          month = `0${splitArr[0]}`
+        } else{
+          month = `${splitArr[0]}`
+        }
+        if (splitArr[1].length === 1){
+          day = `0${splitArr[1]}`
+        } else {
+          day = `${splitArr[1]}`
+        }
+        let finalDate = `${splitArr[2]}-${month}-${day}`
+        // console.log(finalDate)
+        return finalDate
+      } catch{
+        console.log('error')
       }
-      if (splitArr[1].length === 1){
-        day = `0${splitArr[1]}`
-      } else {
-        day = `${splitArr[1]}`
-      }
-      let finalDate = `${splitArr[2]}-${month}-${day}`
-      // console.log(finalDate)
-      return finalDate
     },
     header(){
+      try{
       let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
       return this.date.toLocaleString('en-US', options)
+      } catch {
+        return 'No Day Selected'
+      }
+
     },
   },
   methods:{
@@ -228,6 +238,7 @@ export default {
       this.dispSugGoal=cond
     },
     async getAllDays(){
+      try{
       const res = await axios.get(`/days`)
       this.barOptions.scales.y.suggestedMax = this.$store.state.profile.daily_carb
       let allDays = res.data
@@ -295,6 +306,9 @@ export default {
         ],
         
       }
+    } catch {
+      console.log('error')
+    }
     }
   }
 }
