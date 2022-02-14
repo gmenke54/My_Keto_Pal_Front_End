@@ -46,9 +46,6 @@ export default {
         return this.food.name
       }
     },
-    // curDate(){
-    //     return this.$store.state.day.date
-    // }
   },
   methods: {
     cancel(){
@@ -166,64 +163,6 @@ export default {
           console.log('caught error')
         }
       }
-
-
-// Old version:
-// ///////////////////////////////////////
-      // let res = await axios.get(`https://api.edamam.com/api/nutrition-data?app_id=${process.env.VUE_APP_ID}&app_key=${process.env.VUE_APP_KEY}&nutrition-type=cooking&ingr=${this.newFood}`)
-      // let nutrients = res.data
-      // console.log('posting food')
-      // console.log(this.$store.state.day.id)
-      // let transf = 0.0
-      // try {
-      //   transf = nutrients.totalNutrients.FATRN.quantity
-      // } catch {
-      //   transf = 0.0
-      // }
-      // try {
-      //   let foodObj = {
-      //   days: [this.$store.state.day.id],
-		  //   name: this.newFood,
-		  //   weight: nutrients.totalWeight,
-		  //   carbs: nutrients.totalNutrients.CHOCDF.quantity,
-		  //   calories: nutrients.calories,
-	    // 	fat: nutrients.totalNutrients.FAT.quantity,
-		  //   protein: nutrients.totalNutrients.PROCNT.quantity,
-		  //   sugar: nutrients.totalNutrients.SUGAR.quantity,
-		  //   fiber: nutrients.totalNutrients.FIBTG.quantity,
-		  //   saturated: nutrients.totalNutrients.FASAT.quantity,
-		  //   trans: transf,
-		  //   chol: nutrients.totalNutrients.CHOLE.quantity,
-		  //   sodium: nutrients.totalNutrients.NA.quantity,
-		  //   added_sugar: 0.0,
-		  //   chol_dv: nutrients.totalDaily.CHOLE.quantity,
-		  //   sodium_dv: nutrients.totalDaily.NA.quantity
-      // }
-      // let response = await axios.post(`/foods/`, foodObj)
-
-
-
-      // this.delFood()
-
-
-
-      // let resp = await axios.get('/days')
-      // console.log(resp.data)
-      // let id = this.$store.state.user.id
-      // const result = resp.data.filter(day => day.user_id===id && day.date===this.$store.state.day.date)
-      // console.log(result[0])
-      // this.$store.commit('setDay', result[0])
-      // this.newFood = null
-      // this.dispLoading=false
-      // this.dispUpdate=false
-      // } catch {
-      //   this.dispCancel = true
-      //   this.error = true
-      //   this.dispLoading=false
-      //   this.newFood= null
-      //   console.log('caught error')
-      // }
-
     }
   }
 }
@@ -234,7 +173,6 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  /* margin: 10px 0; */
   padding: 4px 5px;
   border-radius: 3px;
   cursor: pointer;
@@ -255,9 +193,6 @@ export default {
   background-color: #338ee2;;
 }
 .label{
-  /* works but sucks: */
-  /* position: fixed;
-  right: 29vw; */
   position: absolute;
   left: -180px
 }

@@ -69,8 +69,6 @@ export default {
 .add-feed{
   position: sticky;
   top: 30%;
-  /* display: flex;
-  justify-content: center; */
   margin: 0 auto;
   width: 300px;
   margin-top: -180px;

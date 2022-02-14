@@ -12,7 +12,6 @@
             <img  @mouseover="this.show=true" @mouseleave="this.show=false" src="https://media-exp1.licdn.com/dms/image/C5603AQGmr5tzUwS9Kg/profile-displayphoto-shrink_800_800/0/1638995274513?e=1650499200&v=beta&t=DMG-0GKAop8i0H9rWH7e6fhIeDw1G2sZ2GT2XFbwUeo" @click="golinkedin" alt="profile image">
               <div v-if="show" class="name">Grant Menke</div>
             </div>
-            <!-- <a class="linked-in-link" href="https://www.linkedin.com/in/grantmenke/">Grant Menke</a> -->
             <a class="linked-in-link" href="http://grantmenke.com/">Portfolio</a>
           </div>
         </div>
@@ -121,11 +120,7 @@ a{
 .linked-in-link {
   text-decoration: none;
   color: rgba(68, 68, 68, 0.87);
-  /* height: 48px; */
-  /* margin-top: 1vh; */
   margin: 0.5vw;
-  /* margin: 10px; */
-  /* background-color: rgb(39, 39, 39); */
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -138,7 +133,6 @@ a{
   text-decoration: none;
   color: rgba(68, 68, 68, 0.87);
   margin-top: 2vh;
-  /* background-color: rgb(39, 39, 39); */
   padding: 2vw 4vw 2vw 4vw;
   margin: 0.5vw;
   border-radius: 10px;
@@ -161,7 +155,6 @@ a{
 
 .about,
 .credits {
-  /* background-color: rgb(29, 29, 29); */
   border-radius: 10px;
   padding: 1.5vw;
   margin: 0 auto;

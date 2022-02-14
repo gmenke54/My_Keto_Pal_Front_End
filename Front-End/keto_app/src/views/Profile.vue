@@ -60,7 +60,6 @@ export default {
     color: 'blue',
     favFood: null,
     options: {
-        // responsive: false,
         plugins: {
           legend: {
             display: false
@@ -70,7 +69,6 @@ export default {
       blur: 'clear',
       show: false,
       options: {
-        // responsive: false,
         plugins: {
           legend: {
             display: false
@@ -284,7 +282,6 @@ export default {
 
 .pic{
   height: 195px;
-  /* border: 2px solid #3181CE; */
   border-radius: 300px
 }
 .click{
@@ -312,8 +309,6 @@ export default {
   width: 90px;
   padding: 5px 0;
   position: absolute;
-  /* left: 60%;
-  top: 70% */
 }
 .red{
   background-color: rgb(165, 70, 70);

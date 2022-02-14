@@ -110,7 +110,6 @@ export default {
         }
       },
       options: {
-        // responsive: false,
         plugins: {
           legend: {
             display: false
@@ -211,7 +210,6 @@ export default {
           day = `${splitArr[1]}`
         }
         let finalDate = `${splitArr[2]}-${month}-${day}`
-        // console.log(finalDate)
         return finalDate
       } catch{
         console.log('error')
@@ -300,7 +298,6 @@ export default {
           {
             label: 'Carbs',
             data: [newArr[0].toFixed(this.$store.state.profile.decimals), newArr[1].toFixed(this.$store.state.profile.decimals), newArr[2].toFixed(this.$store.state.profile.decimals), newArr[3].toFixed(this.$store.state.profile.decimals), newArr[4].toFixed(this.$store.state.profile.decimals), newArr[5].toFixed(this.$store.state.profile.decimals), newArr[6].toFixed(this.$store.state.profile.decimals)],
-            // backgroundColor: ['#3181CE', '#3181CE', '#3181CE', '#3181CE', '#3181CE', '#3181CE', '#3181CE'],
             backgroundColor: colorArr,
           },
         ],
@@ -378,8 +375,4 @@ export default {
 .fade-enter, .fade-leave-to {
   opacity: 0
 }
-/* .span{
-  padding: 1rem;
-  width: max(80vw, 20rem)
-} */
 </style>
