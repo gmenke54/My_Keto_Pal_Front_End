@@ -22,9 +22,9 @@
         <div class="links">
           <a
             class="linked-in"
-            href="V-Caelndar Plugin"
+            href="https://vcalendar.io/"
           >
-            NBA Stats API
+            V-Calendar Date Plugin
           </a>
           <a class="linked-in" href="https://www.canva.com/">
             Canva
@@ -59,6 +59,12 @@
           >
             Toggle Button Plugin
           </a>
+          <a
+            class="linked-in"
+            href="https://www.youtube.com/watch?v=LXV4wn8scvM&t=2884s"
+          >
+            Token Based Authentication
+          </a>
         </div>
       </div>
     </div>
@@ -90,10 +96,10 @@ export default {
 .name{
   color: white;
   position: absolute;
-  top: 40.65%;
+  top: 43.5%;
   text-align: center;
   font-weight: 700;
-  font-size: 2vw
+  font-size: 2.4vw
 }
 a{
   font-weight: 600
@@ -177,12 +183,12 @@ a{
 
 img{
   border-radius: 50%;
-  height: 16vw;
+  height: 18vw;
   cursor: pointer;
-  border: 2px solid #3181CE;
+  border: 3px solid #3181CE;
 }
 img:hover{
-  border: 2px solid #5fa4e4;
+  border: 3px solid #5fa4e4;
   opacity: 0.75;
 }
 </style>
