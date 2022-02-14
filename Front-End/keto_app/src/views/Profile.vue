@@ -1,36 +1,45 @@
 <template>
   <div class="profile">
     <div v-if="this.$store.state.isAuthenticated">
-      <div v-if="this.$store.state.profile">
-        <div class="pic-cont">
-          <div class="activity" :class="color">{{this.activity}}</div>
-          <div v-if="dispEdit" class="edit">click to edit</div>
-        </div>
-        <div class="name">{{ this.$store.state.profile.name}}, {{this.$store.state.profile.age}}</div>
-        <div class="nut" @mouseover="togglePictureOn()" @mouseleave="togglePictureOff()" >
+      <div class="prof-cont" v-if="this.$store.state.profile">
+        <div class="name">{{ this.$store.state.profile.name}}</div>
+        <div class="flex-row-main">
+          <div class="chart-cont">
+            <LineChart class="line-chart" :chartData="weightData" :options="this.options"/>
+            <div class="line-title">Weight Projections</div>
+          </div>
+          <div class="nut" @mouseover="togglePictureOn()" @mouseleave="togglePictureOff()" >
+            <div v-if="show" class="hole goals">Goals</div>
+            <img  :src="this.$store.state.profile.img" class="pic hole" :class="blur" alt="profile picture">
+            <DoughnutChart :chartData="goalData" :options="this.options" />
+          </div>
+          <div class="detail-card">
 
-          <div v-if="show" class="hole goals">Goals</div>
-          <img  :src="this.$store.state.profile.img" class="pic hole" :class="blur" alt="profile picture">
-          <DoughnutChart :chartData="goalData" :options="this.options" />
-        </div>
-        <LineChart :chartData="weightData" :options="this.options"/>
-        <div>{{this.$store.state.user.email}}</div>
-        <div @dblclick="togDisplay" class="click">
-          <div v-if="displayForm">
-            <form @submit.prevent="updateWeight">
-              <input type="number" name="newWeight" :placeholder="this.$store.state.profile.cur_weight" v-model="newWeight"/>
-              <button type="submit">Update</button>
-            </form>
+            <div class="activity" :class="color">{{this.activity}}</div>
+            <div class=info-box>
+                <div>{{this.$store.state.profile.age}} years</div>
+              <div>{{this.$store.state.user.email}}</div>
+              <div @dblclick="togDisplay" class="click">
+                <div v-if="displayForm">
+                  <form @submit.prevent="updateWeight">
+                    <input type="number" name="newWeight" :placeholder="this.$store.state.profile.cur_weight" v-model="newWeight"/>
+                    <button type="submit">Update</button>
+                  </form>
+                </div>
+                <div v-else>Starting Weight: {{this.$store.state.profile.cur_weight}}</div>
+                </div>
+              <div v-if="this.dispValue" class="flex-row">
+                <div>Display Decimals</div>
+                <Toggle v-model="value" class="toggle-blue" offLabel="0" onLabel="1" @change="this.toggle()"/>
+              </div>
+            </div>
           </div>
-          <div v-else>Starting Weight: {{this.$store.state.profile.cur_weight}}</div>
-          </div>
-        <div v-if="this.dispValue" class="flex-row">
-          <div>Display Decimals</div>
-          <Toggle v-model="value" class="toggle-blue" offLabel="0" onLabel="1" @change="this.toggle()"/>
         </div>
-        <div>My Posts</div>
-        <div :key=element.id v-for="element in this.$store.state.profile.my_posts" >
+        <div class="post-title">My Posts</div>
+        <div class="posts-cont">
+        <div :key=element.id v-for="element in this.myPosts" >
           <FeedCard :element="element" :delete="true" />
+        </div>
         </div>
         <div class="btn" @click="delProfile">Clear Profile</div>
       </div>
@@ -87,6 +96,10 @@ export default {
     
   },
   computed: {
+    myPosts(){
+      let newArr =  this.$store.state.profile.my_posts.reverse()
+      return newArr
+    },
     dispValue(){
       if (this.$store.state.profile.decimals === 0){
         this.value = false
@@ -237,6 +250,62 @@ export default {
 </script>
 
 <style scoped>
+.posts-cont{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+  width: 80%;
+  margin: 0 auto
+}
+.post-title{
+  margin: 30px 0 0 0;
+  font-weight: 600;
+  font-size: 25px
+}
+.flex-row-main{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100vw
+}
+.info-box{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.detail-card{
+  width: 275px;
+  height: 175px;
+  padding: 30px 30px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+  box-shadow: 0px 0px 12px -5px rgba(0,0,0,0.7);
+  margin: 0 32.5px;
+}
+.chart-cont{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 400px;
+}
+.line-chart{
+  margin: 0 auto
+}
+.line-title{
+  position: absolute;
+  top: -2%;
+  text-align: center;
+  font-weight: 600;
+  font-size: 26px
+}
 .flex-row{
   display: flex;
   flex-direction: row;
@@ -295,20 +364,21 @@ export default {
   font-weight: 500;
   padding: 10px 60px;
   border-radius: 5px;
-  width: 30vw
+  width: 20vw;
+  margin: 0 auto
 }
 .btn:hover{
   background-color: #338ee2;
 }
 .name{
-  font-weight: 600
+  font-weight: 600;
+  font-size: 25px
 }
 .activity{
   border-radius: 5px;
   color: white;
   width: 90px;
   padding: 5px 0;
-  position: absolute;
 }
 .red{
   background-color: rgb(165, 70, 70);

@@ -7,7 +7,7 @@
         <LinkPreview :link="element.link"/>
       </div>
     </div>
-    <div v-if="this.delete" @click="delPost()">delete</div>
+    <div class="delBtn" v-if="this.delete" @click="delPost()">delete</div>
   </div>
 </template>
 
@@ -34,16 +34,35 @@ export default {
 </script>
 
 <style scoped>
+.delBtn{
+  cursor: pointer;
+  background-color: #3181CE;
+  color: white;
+  border-radius: 0 0 5px 5px;
+  padding: 0 10px;
+  font-weight: 500;
+  width: 60%
+}
+.delBtn:hover{
+  background-color: #338ee2;;
+}
+
+.feed-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px;
+}
+
 img{
   max-height: 150px;
   border-radius: 10px;
   box-shadow: 0px 0px 12px -5px rgba(0,0,0,0.7);
-  margin: 15px;
 }
 .text{
   max-width: 175px;
   padding: 10px;
-  margin: 15px;
+
   background-color: white;
   color: rgb(65, 65, 65);
   font-weight: 500;
@@ -60,7 +79,6 @@ img{
   border-radius: 10px;
   box-shadow: 0px 0px 12px -5px rgba(0,0,0,0.7);
   cursor: pointer;
-  margin: 15px;
   z-index: 4;
 }
 .link:hover{

@@ -67,7 +67,7 @@ form{
   flex-direction: column;
 }
 .btn{
-    cursor: pointer;
+  cursor: pointer;
   background-color: #3181CE;
   color: white;
   font-size: 20px;
