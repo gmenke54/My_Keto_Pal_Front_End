@@ -19,7 +19,7 @@ A Full-stack proprietary nutrient tracker to help users become informed on and m
 This is a full CRUD browser-based ketogenic-diet centered nutrient tracking app written in Vue.js, Django, and Python which I coded two weeks after being introduced to these languages.
 
 **Backend Github:** [Github](https://github.com/gmenke54/My_Keto_Pal)
-**Frontend Github:** [Github]https://github.com/gmenke54/My_Keto_Pal_Front_End)
+**Frontend Github:** [Github](https://github.com/gmenke54/My_Keto_Pal_Front_End)
 
 ---
 
