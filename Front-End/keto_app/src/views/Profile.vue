@@ -152,7 +152,7 @@ export default {
 
 
         for (let i = 1; i < months - 1; i++) {
-          let weightPoint = weightArr[i - 1] + (i * c) / 3
+          let weightPoint = weightArr[i - 1] + (i * c) / (months/2)
           console.log(weightPoint)
           weightArr.push(weightPoint);
           console.log(weightArr)

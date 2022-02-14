@@ -105,7 +105,8 @@ export default createStore({
     },
     async getFeed(state) {
       const posts = await axios.get('/posts');
-      state.commit('setFeed', posts.data);
+      let newArr = posts.data.reverse();
+      state.commit('setFeed', newArr);
     }
   },
   modules: {}

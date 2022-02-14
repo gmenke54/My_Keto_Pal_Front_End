@@ -45,10 +45,10 @@
       </div>
       <div class="slide" v-if="slide===5">
         <div>How many weeks to you plan to maintain a ketogenic diet for?</div>
-        <input type="number" name="keto_weeks" placeholder="Weeks until goal weight" v-model="keto_weeks"/>
+        <input type="number" :class="error" name="keto_weeks" :placeholder="placeholder2" v-model="keto_weeks"/>
         <div class="btnBar">
           <div class="btn hollow" @click="slide--">back</div>
-          <div class="btn" @click="slide++">next</div>
+          <div class="btn" @click="checkWeeks()">next</div>
         </div>
       </div>
       <div class="slide" v-if="slide===6">
@@ -82,6 +82,7 @@ export default {
     med: 'grey',
     high: 'grey',
     placeholder: 'Current weight Ibs',
+    placeholder2: 'Weeks until goal weight',
     error: 'normal'
   }),
   methods: {
@@ -91,6 +92,15 @@ export default {
       }else {
         this.placeholder = "Current must be more than goal"
         this.cur_weight = null
+        this.error = 'red'
+      }
+    },
+    checkWeeks(){
+      if (this.keto_weeks>6){
+        this.slide++
+      }else {
+        this.placeholder = "You must be keto for at least 7 weeks"
+        this.keto_weeks= null
         this.error = 'red'
       }
     },
