@@ -47,7 +47,6 @@
           <span class="span">
             <DoughnutChart :chartData="fatData" :options="this.options" />
           </span>
-          
         </div>
       </div>
     </div>

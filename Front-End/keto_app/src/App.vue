@@ -21,14 +21,18 @@ import axios from 'axios'
 export default {
   name: 'App',
   beforeCreate() {
-    this.$store.commit('initializeStore')
-    const token = this.$store.state.token
-    if ( token ) {
-      axios.defaults.headers.common['Authorization'] = "Token " + token
-    } else {
-      axios.defaults.headers.common['Authorization'] = ''
+    try{
+      this.$store.commit('initializeStore')
+      const token = this.$store.state.token
+      if ( token ) {
+        axios.defaults.headers.common['Authorization'] = "Token " + token
+      } else {
+        axios.defaults.headers.common['Authorization'] = ''
+      }
+      this.$store.dispatch('setUserId')    
+    } catch {
+      this.$router.push('/signin');
     }
-    this.$store.dispatch('setUserId')    
   },
   methods: {
     logout(){
@@ -37,8 +41,10 @@ export default {
         axios
           .post('/api/v1/token/logout', token)
           .then(response => {
-            this.$store.commit('removeToken')
-            localStorage.setItem("token", '')
+            // may to remove token upon logout here:
+            // this.$store.commit('removeToken')
+            // localStorage.setItem("token", '')
+            localStorage.removeItem("token")
             axios.defaults.headers.common['Authorization'] = ''
             this.$router.push('/signin')
             this.$store.commit('setUser', {id:null, email:null})

@@ -48,7 +48,7 @@
       </div>
     </div>
     <div v-else>
-      Please Login!
+      <Signin />
     </div>
   </div>
 </template>
@@ -59,6 +59,7 @@ import AddProfile from '@/components/AddProfile.vue'
 import FeedCard from '@/components/FeedCard.vue'
 import { DoughnutChart, BarChart, LineChart } from 'vue-chart-3';
 import Toggle from '@vueform/toggle'
+import Signin from '../views/Signin.vue';
 
 export default {
   name: 'Profile',
@@ -92,7 +93,8 @@ export default {
     FeedCard,
     DoughnutChart,
     LineChart,
-    Toggle
+    Toggle,
+    Signin
     
   },
   computed: {

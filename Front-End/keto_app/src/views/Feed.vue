@@ -1,5 +1,6 @@
 <template>
   <div class="feed-page">
+    <div v-if="this.$store.state.isAuthenticated">
     <div @click="this.posting=true" v-if="this.posting===false" class="postBtn">Post</div>
     <AddFeed v-else class="add-feed" @handleSubmit="handleSubmit" />
     <div v-if="this.posting===true" class="dummy" @click="this.posting=false"></div>
@@ -8,7 +9,10 @@
       <FeedCard :element="element" :delete="false" />
     </div>
     </div>
-
+    </div>
+    <div v-else>
+      <Signin />
+    </div>
   </div>
 </template>
 
@@ -16,6 +20,8 @@
 import axios from 'axios'
 import FeedCard from '../components/FeedCard.vue'
 import AddFeed from '../components/AddFeed.vue'
+import Signin from '../views/Signin.vue';
+
 export default {
   name: 'Feed',
   data: ()=> ({
@@ -28,6 +34,7 @@ export default {
   components: {
     FeedCard,
     AddFeed,
+    Signin
   },
   mounted(){
   },

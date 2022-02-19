@@ -92,16 +92,20 @@ export default createStore({
   },
   actions: {
     async setUserId(state) {
-      const res = await axios.get('api/v1/users/');
-      const curUser = {
-        id: res.data[0].id,
-        email: res.data[0].email
-      };
-      state.commit('setUser', curUser);
       try {
+        const res = await axios.get('api/v1/users/');
+        const curUser = {
+          id: res.data[0].id,
+          email: res.data[0].email
+        };
+        state.commit('setUser', curUser);
         const resp = await axios.get(`/profiles/${this.state.user.id}`);
         state.commit('setProfile', resp.data);
-      } catch {}
+      } catch {
+        localStorage.removeItem('token');
+        axios.defaults.headers.common['Authorization'] = '';
+        state.commit('removeToken');
+      }
     },
     async getFeed(state) {
       const posts = await axios.get('/posts');
