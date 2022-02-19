@@ -1,4 +1,4 @@
-# **MyKetoPal Nutrient Tracker**
+# **MyKetoPal Nutrient Tracker Frontend**
 
 ### Grant Menke
 
