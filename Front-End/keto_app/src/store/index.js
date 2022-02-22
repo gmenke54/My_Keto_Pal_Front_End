@@ -99,14 +99,18 @@ export default createStore({
           email: res.data[0].email
         };
         state.commit('setUser', curUser);
-        const resp = await axios.get(`/profiles/${this.state.user.id}`);
-        state.commit('setProfile', resp.data);
       } catch {
         localStorage.removeItem('token');
         axios.defaults.headers.common['Authorization'] = '';
         state.commit('removeToken');
       }
+      const resp = await axios.get(`/profiles/${this.state.user.id}`);
+      state.commit('setProfile', resp.data);
     },
+    // async setProfile(state){
+    //   const resp = await axios.get(`/profiles/${this.state.user.id}`);
+    //   state.commit('setProfile', resp.data);
+    // },
     async getFeed(state) {
       const posts = await axios.get('/posts');
       let newArr = posts.data.reverse();

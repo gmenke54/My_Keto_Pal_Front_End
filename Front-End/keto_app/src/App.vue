@@ -29,7 +29,7 @@ export default {
       } else {
         axios.defaults.headers.common['Authorization'] = ''
       }
-      this.$store.dispatch('setUserId')    
+      this.$store.dispatch('setUserId')
     } catch {
       this.$router.push('/signin');
     }
